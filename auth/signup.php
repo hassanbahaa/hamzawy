@@ -7,7 +7,9 @@ $name           = filterRequest('name') ;
 $email          = filterRequest('email');
 $phone          = filterRequest('phone');
 $password       = filterRequest('password');
-$verify         = filterRequest('verify');
+$verify         = rand(10000,99999);
+$subject        = "Verify Your Account";
+$verifyMessage  = "Please verify your account using this code: $verify";
 
 $stmt = $connect->prepare("SELECT * FROM users WHERE users_email = ? OR users_phone = ? " );
 
@@ -24,6 +26,7 @@ if($count > 0){
     (?,?,?,?,?)");
    
    $stmt->execute(array($name,$email,$phone,$password,$verify));
+   sendEmail($email,$subject,$verifyMessage);
 
    $count = $stmt->rowCount();
     

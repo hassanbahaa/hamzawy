@@ -146,6 +146,14 @@ function deleteFiles($dir,$fileName){
 
 
 
+function sendEmail($to,$subject,$message){
+
+$header = "From: support@hamzawystore.com" . "\n" . " CC: $to";
+
+
+mail($to,$subject,$message,$header);
+
+}
 
 
 
