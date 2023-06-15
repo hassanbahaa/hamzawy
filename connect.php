@@ -2,7 +2,8 @@
 
 include "functions.php";
 
-
+//id20733854_
+//Hh%240407
 $dsn            = "mysql:host=localhost;dbname=hamzawy";
 $user           = "root";
 $pass           = "";
@@ -19,11 +20,11 @@ try {
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Access-Control-Allow-Origin");
     header("Access-Control-Allow-Methods: POST, OPTIONS , GET");
-    // echo "Connected";
+
 
 } catch (PDOException $e) {
     //throw $th;
-    echo "Error " . $e->getMessage();
+    echo "Error from connect file " . $e->getMessage();
 }
 
 

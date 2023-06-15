@@ -11,21 +11,68 @@ function filterRequest($requestname){
 
 
 
-function getAllData($table, $where = null, $values = null)
+function getAllData($table, $where = null, $values = null, $json = true)
+{
+    global $connect;
+    $data = array();
+    if($where == null ){
+        $stmt = $connect->prepare("SELECT  * FROM $table ");
+    }else{
+        $stmt = $connect->prepare("SELECT  * FROM $table WHERE   $where ");
+    }
+    
+    $stmt->execute($values);
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $count  = $stmt->rowCount();
+
+    if ($json == true ){
+        if ($count > 0){
+            echo json_encode(array("status" => "success", "data" => $data,"message" => "get all data function done"));
+        } else {
+            echo json_encode(array("status" => "failure","message" => "failed get all data"));
+        }
+        return $count;
+    }else {
+       if($count > 0){
+        return $data;
+       }else{
+        return json_encode(array("status" => "failure","message" => "failed get all data"));
+       }
+    }
+
+
+}
+
+
+
+function getData($table, $where = null, $values = null)
 {
     global $connect;
     $data = array();
     $stmt = $connect->prepare("SELECT  * FROM $table WHERE   $where ");
     $stmt->execute($values);
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $data = $stmt->fetch(PDO::FETCH_ASSOC);
     $count  = $stmt->rowCount();
     if ($count > 0){
-        echo json_encode(array("status" => "success", "data" => $data));
+        echo json_encode(array("status" => "success", "data" => $data,"message" => "get data function done"));
     } else {
-        echo json_encode(array("status" => "failure"));
+        echo json_encode(array("status" => "failure","message" => "failed get data"));
     }
     return $count;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function insertData($table, $data, $json = true)
@@ -49,9 +96,9 @@ function insertData($table, $data, $json = true)
     $count = $stmt->rowCount();
     if ($json == true) {
     if ($count > 0) {
-        echo json_encode(array("status" => "success"));
+        echo json_encode(array("status" => "success","message" => "success insert data"));
     } else {
-        echo json_encode(array("status" => "failure"));
+        echo json_encode(array("status" => "failure","message" => "failed insert data"));
     }
   }
     return $count;
@@ -78,9 +125,9 @@ function updateData($table, $data, $where, $json = true)
     $count = $stmt->rowCount();
     if ($json == true) {
     if ($count > 0) {
-        echo json_encode(array("status" => "success"));
+        echo json_encode(array("status" => "success","message" => "success updata data"));
     } else {
-        echo json_encode(array("status" => "failure"));
+        echo json_encode(array("status" => "failure","message" => "failed update data"));
     }
     }
     return $count;
@@ -97,9 +144,9 @@ function deleteData($table, $where, $json = true)
     $count = $stmt->rowCount();
     if ($json == true) {
         if ($count > 0) {
-            echo json_encode(array("status" => "success"));
+            echo json_encode(array("status" => "success","message" => "success delete data"));
         } else {
-            echo json_encode(array("status" => "failure"));
+            echo json_encode(array("status" => "failure","message" => "failed delete data"));
         }
     }
     return $count;
@@ -149,6 +196,8 @@ function deleteFiles($dir,$fileName){
 function sendEmail($to,$subject,$message){
 
 $header = "From: support@hamzawystore.com" . "\n" . " CC: $to";
+$header .= "Reply-To: noreply@hamzawystore.com\r\n";
+$header .= "Content-Type: text/html; charset=UTF-8\r\n";
 
 
 mail($to,$subject,$message,$header);

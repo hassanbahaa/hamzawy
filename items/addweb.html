@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add products to Database</title>
+    <style>
+        /* Add some basic styling to the form */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding-top: 20px;
+            padding-right: 40px;
+            padding-left: 40px;
+
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            font-size: 20px;
+            width: 50%;
+            height: 50px;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 0 auto;
+            display: block;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .success {
+            color: #4CAF50;
+        }
+
+        .error {
+            color: #f44336;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Add products to Database</h1>
+    <form id="data-form">
+        <label for="items_name">product name:</label>
+        <input type="text" id="items_name" name="items_name">
+        <label for="items_name_ar">product name ar:</label>
+        <input type="text" id="items_name_ar" name="items_name_ar">
+        <label for="items_description">product description:</label>
+        <input type="text" id="items_description" name="items_description">
+        <label for="items_description_ar">product description ar:</label>
+        <input type="text" id="items_description_ar" name="items_description_ar">
+        <label for="items_count">product count:</label>
+        <input type="text" id="items_count" name="items_count">
+        <label for="items_active">product active:</label>
+        <input type="text" id="items_active" name="items_active">
+        <label for="items_price">product price:</label>
+        <input type="text" id="items_price" name="items_price">
+        <label for="items_discount">product discount:</label>
+        <input type="text" id="items_discount" name="items_discount">
+        <label for="items_cat">product category:</label>
+        <input type="text" id="items_cat" name="items_cat">
+        <input type="submit" value="Add Data">
+    </form>
+    <div id="message"></div>
+
+    <script>
+        const form = document.getElementById("data-form");
+        const message = document.getElementById("message");
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const items_name = document.getElementById("items_name").value;
+            const items_name_ar = document.getElementById("items_name_ar").value;
+            const items_description = document.getElementById("items_description").value;
+            const items_description_ar = document.getElementById("items_description_ar").value;
+            const items_count = document.getElementById("items_count").value;
+            const items_active = document.getElementById("items_active").value;
+            const items_price = document.getElementById("items_price").value;
+            const items_discount = document.getElementById("items_discount").value;
+            const items_cat = document.getElementById("items_cat").value;
+            console.log("items name is " + items_name + "  and og is " + document.getElementById("items_name").value);
+            if (!items_name || !items_description || !items_active || !items_price || !items_cat) {
+                alert("Please fill in all fields");
+                return;
+            }
+            // Construct the request data
+            const requestData = {
+                name: items_name,
+                name_ar: items_name_ar,
+                description: items_description,
+                description_ar: items_description_ar,
+                count: items_count,
+                active: items_active,
+                price: items_price,
+                discount: items_discount,
+                cat: items_cat
+            };
+
+            console.log(requestData);
+
+            fetch("http://localhost/hamzawy_local/items/add.php", {
+                method: "POST",
+                body: requestData
+
+            })
+                .then((response) => response)
+                
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+
+
+        });
+    </script>
+</body>
+
+</html>
